@@ -1,0 +1,7 @@
+version: '2'
+services:
+  review:
+    image: vvakame/review
+    working_dir: /work/src
+    volumes:
+      - .:/work
