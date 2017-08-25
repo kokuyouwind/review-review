@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: vvakame/review
+    steps:
+      - checkout
+      - run:
+          name: build pdf
+          command: "cd src && review-pdfmaker config.yml"
+      - store_artifacts:
+          path: src/book.pdf
