@@ -5,8 +5,18 @@ jobs:
       - image: vvakame/review
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - node_modules_{{ checksum "yarn.lock" }}
+      - run:
+          name: lint
+          command: "yarn run lint"
       - run:
           name: build pdf
           command: "cd src && review-pdfmaker config.yml"
       - store_artifacts:
           path: src/book.pdf
+      - save_cache:
+          key: node_modules_{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
