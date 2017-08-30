@@ -3,10 +3,25 @@ jobs:
   build:
     docker:
       - image: vvakame/review
+        environment:
+          REVIEWDOG_VERSION: 0.9.8
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - node_modules_{{ checksum "yarn.lock" }}
+      - run:
+          name: install reviewdog
+          command: "curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog"
+      - run:
+          name: lint
+          command: "$(npm bin)/textlint -f checkstyle src/*.re | ./reviewdog -f=checkstyle -name=textlint -ci=circle-ci"
       - run:
           name: build pdf
           command: "cd src && review-pdfmaker config.yml"
       - store_artifacts:
           path: src/book.pdf
+      - save_cache:
+          key: node_modules_{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
