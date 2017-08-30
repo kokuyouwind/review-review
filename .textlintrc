@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    "review"
+  ],
+  "filters": {},
+  "rules": {
+    "preset-ja-technical-writing": true
+  }
+}

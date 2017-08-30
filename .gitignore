@@ -1,1 +1,3 @@
 dists
+*.log
+node_modules

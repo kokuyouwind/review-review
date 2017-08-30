@@ -1,0 +1,17 @@
+{
+  "name": "review-scaffold",
+  "version": "1.0.0",
+  "description": "review scaffold boilerplate",
+  "main": "index.js",
+  "repository": "https://github.com/kokuyouwind/review-scaffold",
+  "author": "kokuyouwind",
+  "license": "MIT",
+  "scripts": {
+    "lint": "yarn --pure-lockfile && textlint src/*.re"
+  },
+  "dependencies": {
+    "textlint": "^8.2.1",
+    "textlint-plugin-review": "^0.3.3",
+    "textlint-rule-preset-ja-technical-writing": "^0.1.3"
+  }
+}
