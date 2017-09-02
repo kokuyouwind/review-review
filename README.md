@@ -24,5 +24,10 @@ option: You can use [CircleCI](https://circleci.com/) for autobuild pdf and use 
 Run commands at project root.
 
 - `./bin/pdf` for create pdf.
+  - creates `dists/book.pdf`
 - `./bin/epub` for create epub.
+  - creates `dists/book.epub`
+- `./bin/html` for create html pages.
+  - creates `docs/*.html`
+  - [GitHub Pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) Available
 - `./bin/review` for check textlint.
