@@ -1,7 +1,7 @@
 #!/bin/sh
 rm docs/*.html
 docker-compose run --rm review bash -c "
-review-index -a --html > index.html
+review-index -a --html | sed -e 's/a name/a href/g' > index.html
 ls *.re | sed 's/\.re$//' | xargs -i bash -c 'review-compile --target html {}.re > {}.html'
 "
 mv src/*.html docs

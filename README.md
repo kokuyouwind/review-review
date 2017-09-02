@@ -30,4 +30,5 @@ Run commands at project root.
 - `./bin/html` for create html pages.
   - creates `docs/*.html`
   - [GitHub Pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) Available
+  - (using Re:VIEW deprecated feature)
 - `./bin/review` for check textlint.
