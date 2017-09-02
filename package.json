@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "textlint": "^8.2.1",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-filter-rule-whitelist": "^1.1.0",
     "textlint-plugin-review": "^0.3.3",
     "textlint-rule-preset-ja-technical-writing": "^0.1.3"
   }
