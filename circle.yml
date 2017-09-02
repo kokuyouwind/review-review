@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: vvakame/review
+      - image: kokuyouwind/review-graph
         environment:
           REVIEWDOG_VERSION: 0.9.8
     steps:

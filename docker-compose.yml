@@ -1,7 +1,7 @@
 version: '2'
 services:
   review:
-    image: vvakame/review
+    image: kokuyouwind/review-graph
     working_dir: /work/src
     volumes:
       - .:/work
