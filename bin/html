@@ -9,4 +9,4 @@ ls *.re | sed 's/\.re$//' | xargs -i bash -c 'review-compile --target html {}.re
 "
 mv src/*.html docs
 cp -r src/images docs
-rm src/images/.gitignore
+rm docs/images/.gitignore
