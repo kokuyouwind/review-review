@@ -22,3 +22,11 @@
  3. Download from GitHub
 
 ホームページは@<tt>{https://reviewml.org/}です。
+
+以下はtextlintの設定テストです。
+
+#@# textlint-disable
+
+この行は行末に読点がありませんが、textlint-disableになっているため検査に通過します
+
+#@# textlint-enable
