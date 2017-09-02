@@ -24,6 +24,7 @@ jobs:
           command: "cd src && review-pdfmaker config.yml"
       - store_artifacts:
           path: src/book.pdf
+          destination: 'book.pdf'
       - save_cache:
           key: node_modules_{{ checksum "yarn.lock" }}
           paths:
