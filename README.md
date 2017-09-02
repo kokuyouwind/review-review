@@ -30,5 +30,7 @@ Run commands at project root.
 - `./bin/html` for create html pages.
   - creates `docs/*.html`
   - [GitHub Pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) Available
+    - set `master branch /docs folder` for GitHub Pages source
+    - ex. https://kokuyouwind.github.io/review-scaffold/
   - (using Re:VIEW deprecated feature)
 - `./bin/review` for check textlint.
