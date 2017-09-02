@@ -30,3 +30,52 @@
 この行は行末に読点がありませんが、textlint-disableになっているため検査に通過します
 
 #@# textlint-enable
+
+以下はグラフ描画のテストです。
+
+//graph[gnuplot_test][gnuplot]{
+plot sin(x)
+//}
+
+//graph[graphviz_test][graphviz]{
+digraph G {
+
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    a0 -> a1 -> a2 -> a3;
+    label = "process #1";
+  }
+
+  subgraph cluster_1 {
+    node [style=filled];
+    b0 -> b1 -> b2 -> b3;
+    label = "process #2";
+    color=blue
+  }
+  start -> a0;
+  start -> b0;
+  a1 -> b3;
+  b2 -> a3;
+  a3 -> a0;
+  a3 -> end;
+  b3 -> end;
+
+  start [shape=Mdiamond];
+  end [shape=Msquare];
+}
+//}
+
+//graph[aafigure_test][aafigure]{
+    <-->  >->   --> <--
+    >--<  o-->  -->+<--
+    o--o          o=>
+//}
+
+//graph[blockdiag_test][blockdiag]{
+blockdiag {
+   A -> B -> C -> D;
+   A -> E -> F -> G;
+}
+//}
