@@ -1,7 +1,11 @@
 #!/bin/sh
 rm docs/*.html
+rm -rf docks/images
+rm -rf src/images/html
+rm -rf src/images/latex
 docker-compose run --rm review bash -c "
 review-index -a --html | sed -e 's/a name/a href/g' > index.html
 ls *.re | sed 's/\.re$//' | xargs -i bash -c 'review-compile --target html {}.re > {}.html'
 "
 mv src/*.html docs
+cp -r src/images docs
