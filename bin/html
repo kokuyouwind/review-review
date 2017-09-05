@@ -1,5 +1,7 @@
 #!/bin/sh
-rm -rf docs/*
-docker-compose run --rm review review-webmaker config.yml
-mv src/webroot/* docs
-rm -rf src/webroot
+docker-compose run --rm review bash -c "
+rm -rf ../docs/*
+review-webmaker config.yml
+mv webroot/* ../docs
+rm -rf webroot
+"

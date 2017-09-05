@@ -1,5 +1,2 @@
 #!/bin/sh
-docker-compose run --rm review review-pdfmaker config.yml
-if [ -f src/book.pdf ]; then
-  mv src/book.pdf dists
-fi
+docker-compose run --rm review bash -c "review-pdfmaker config.yml && mv book.pdf ../dists"
