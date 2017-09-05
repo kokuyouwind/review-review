@@ -1,5 +1,2 @@
 #!/bin/sh
-docker-compose run --rm review review-epubmaker config.yml
-if [ -f src/book.epub ]; then
-  mv src/book.epub dists
-fi
+docker-compose run --rm review bash -c "review-epubmaker config.yml && mv book.epub ../dists"
