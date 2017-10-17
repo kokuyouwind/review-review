@@ -9,7 +9,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node_modules_{{ checksum "yarn.lock" }}
+            - node_modules_{{ arch }}_{{ checksum "yarn.lock" }}
       - run:
           name: yarn install
           command: "yarn install --pure-lockfile"
@@ -32,6 +32,6 @@ jobs:
           path: src/webroot
           destination: html
       - save_cache:
-          key: node_modules_{{ checksum "yarn.lock" }}
+          key: node_modules_{{ arch }}_{{ checksum "yarn.lock" }}
           paths:
             - node_modules
