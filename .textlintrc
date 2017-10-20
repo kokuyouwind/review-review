@@ -9,6 +9,9 @@
     "comments": true
   },
   "rules": {
-    "preset-ja-technical-writing": true
+    "preset-ja-technical-writing": {
+      "no-exclamation-question-mark": false,
+      "ja-no-weak-phrase": false
+    }
   }
 }
