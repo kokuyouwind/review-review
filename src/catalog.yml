@@ -1,5 +1,5 @@
 PREDEF:
-- preface.re
+  - preface.re
 
 CHAPS:
   - chapter01.re
