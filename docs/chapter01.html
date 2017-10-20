@@ -25,6 +25,175 @@
       </header>
       <div class="book-page">
         <h1><a id="h1"></a><span class="secno">第1章　</span>Re:VIEWに触れてみよう！</h1>
+<p>とりあえず、何はともあれRe:VIEWに触ってみましょう。</p>
+<p>本章ではRe:VIEW環境の構築とビルドの仕方、ファイル構成などを簡単に解説します。</p>
+
+<h2><a id="h1-1"></a><span class="secno">1.1　</span>環境構築</h2>
+<p>通常、Re:VIEWを実行するにはRubyの実行環境が必要です。またPDFファイルを生成するにはTeX環境の設定も必要となります。</p>
+<p>しかしこのあたりは面倒でハマりやすい部分です。そこで、今回はDocker<a id="fnb-docker" href="#fn-docker" class="noteref" epub:type="noteref">*1</a>を使用して仮想コンテナ内でRe:VIEWを実行することにしましょう。</p>
+<div class="footnote" epub:type="footnote" id="fn-docker"><p class="footnote">[*1] https://www.docker.com/</p></div>
+<p>Dockerが未インストールの場合、公式サイトを参照してインストールしてください。メニューのGet Dockerから環境に合わせたインストールバイナリを使用すれば簡単にインストールできるはずです。</p>
+<p>Dockerが正しく動いているかの確認が必要な場合、<code class="inline-code tt">docker run hello-world</code>をコンソールから入力してください。以下のような表示が出ていれば、Dockerが正常に起動しています。</p>
+<div class="cmd-code">
+<pre class="cmd">$ <b>docker run hello-world</b>
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+</pre>
+</div>
+<p>Dockerの動作が確認できたらRe:VIEWの環境を構築していきましょう。こちらも1から作るのは面倒なので、著者の用意したボイラープレート<a id="fnb-boiler-plate" href="#fn-boiler-plate" class="noteref" epub:type="noteref">*2</a>を利用することにします。</p>
+<div class="footnote" epub:type="footnote" id="fn-boiler-plate"><p class="footnote">[*2] https://github.com/kokuyouwind/review-scaffold</p></div>
+<p>ボイラープレートの取得にはGitを使用します<a id="fnb-no-git" href="#fn-no-git" class="noteref" epub:type="noteref">*3</a>。環境を構築したいディレクトリで、以下のコマンドを打ち込んでください。ディレクトリ名は<code class="inline-code tt">your_book</code>になるので、好きな識別子に変更しても構いません。</p>
+<div class="footnote" epub:type="footnote" id="fn-no-git"><p class="footnote">[*3] もしGitがインストールされていない場合はZipで取得することも可能ですが、原稿のバージョン管理を行うためにもGitを使用することを強く推奨します。</p></div>
+<div class="cmd-code">
+<pre class="cmd">$ <b>git clone git@github.com:kokuyouwind/review-scaffold.git your_book</b>
+$ <b>cd your_book</b>
+$ <b>git remote rm origin</b>
+</pre>
+</div>
+<p>ボイラープレートには既にサンプル原稿が配置されていますので、試しにPDFファイルを出力してみましょう。</p>
+<p><code class="inline-code tt">your_book</code>ディレクトリの直下で、<code class="inline-code tt">bin/pdf</code>コマンドを実行してください<a id="fnb-bin-windows" href="#fn-bin-windows" class="noteref" epub:type="noteref">*4</a>。なお、初回実行時にはDockerコンテナを取得するため750MB程度のダウンロードが発生します。気長に待ちましょう。</p>
+<div class="footnote" epub:type="footnote" id="fn-bin-windows"><p class="footnote">[*4] シェルスクリプトなので、Windows環境ではMinGWなどから実行してください。</p></div>
+<p>成功すると大量のログが流れますが、以下のように<code class="inline-code tt">XXX bytes written</code>と表示されていれば書き出し成功です。</p>
+<div class="cmd-code">
+<pre class="cmd">$ <b>bin/pdf</b>
+compiling chapter01.tex
+// ～省略～
+97794 bytes written
+</pre>
+</div>
+<p>PDFファイルは<code class="inline-code tt">dists/book.pdf</code>に書き出されます。開いて内容を確認してみましょう。</p>
+<p>これで、書籍をPDFに出力するための環境構築が完了しました。簡単でしたよね？</p>
+
+<h2><a id="h1-2"></a><span class="secno">1.2　</span>ファイル構成</h2>
+<p>準備が整ったところで、まずはディレクトリ構成を確認していきましょう。</p>
+<p>重要なディレクトリ・ファイルのみを以下に示します。</p>
+<div class="emlist-code">
+<pre class="emlist">your_book
+├── bin
+├── dists
+├── docs
+└── src
+   ├── catalog.yml
+   ├── chapter01.re
+   ├── config.yml
+   └── images
+</pre>
+</div>
+<dl>
+<dt>bin</dt>
+<dd>PDF生成などの実行可能スクリプトが格納されています。</dd>
+<dt>dists</dt>
+<dd>生成したPDF及びePubファイルが配置されます。このディレクトリはGit管理対象外になっています。</dd>
+<dt>docs</dt>
+<dd>生成したHTMLファイルが配置されます。GitHub Pagesの利用を考え、このディレクトリはGit管理対象になっています。</dd>
+<dt>src</dt>
+<dd>Re:VIEWの設定や原稿を配置するディレクトリです。書籍を書く際はこのディレクトリ以下のファイルを編集することになります。</dd>
+<dt>catalog.yml</dt>
+<dd>書籍の構成を設定するファイルです。いわゆる目次相当の設定をここに記述します。</dd>
+<dt>chapter01.re</dt>
+<dd>catalog.ymlから参照される、本文を記述するファイルです。拡張子がreであればファイル名は任意で、章構成に合わせていくつかのファイルに分けて本文を書いていくことになります。</dd>
+<dt>config.yml</dt>
+<dd>書籍全体の設定を記述するファイルです。書籍タイトルや奥付の設定などが含まれます。</dd>
+<dt>images</dt>
+<dd>画像ファイルを配置するディレクトリです。本文中から参照する画像は基本的に全てこのディレクトリ内に配置します。</dd>
+</dl>
+
+<h2><a id="h1-3"></a><span class="secno">1.3　</span>config.yml</h2>
+<p>YAMLで書籍全体の設定が記述されています。各設定の意味がコメントで記述されている<a id="fnb-config_comment" href="#fn-config_comment" class="noteref" epub:type="noteref">*5</a>ため、必要に応じて変更すると良いでしょう。</p>
+<div class="footnote" epub:type="footnote" id="fn-config_comment"><p class="footnote">[*5] コメント間違いもあるため、設定後は挙動を確認しましょう。また間違いを見つけたらIssueを作ったりPull Requestを送るとよいでしょう。</p></div>
+<p>特に重要と思う設定を以下に挙げていきます。</p>
+<dl>
+<dt>booktitle, aut</dt>
+<dd>書籍タイトルと著者名。大扉や奥付に使用されます。好きなものに変更しましょう。</dd>
+<dt>date, history</dt>
+<dd>刊行日と発行年月。実際に頒布するときには頒布日に変更すると良いでしょう。</dd>
+<dt>toc</dt>
+<dd>目次ページを作成するかのフラグ。よほど短い書籍でない限りはtrueにしましょう。</dd>
+<dt>coverimage</dt>
+<dd>表紙に使用する画像ファイル。指定すると見栄えが良くなります。</dd>
+<dt>titlepage</dt>
+<dd>表紙の後の大扉を作成するかのフラグ。ページ数は印刷料金に直結するため、表紙がある場合は大扉を作らないようfalseにすることが多いです。</dd>
+<dt>colophon</dt>
+<dd>奥付を作成するかのフラグ。印刷所を使用する場合は必ず作成しましょう。</dd>
+<dt>texdocumentclass</dt>
+<dd>デフォルトではA4サイズのPDFが作成されますが、一般的な同人誌はB5サイズです。このサイズを指定するにはTeXの詳細に立ち入ってしまいますが、<code class="inline-code tt">texdocumentclass: [&quot;jsbook&quot;, &quot;b5j,twoside,openany,uplatex&quot;]</code>を指定してください。</dd>
+</dl>
+<p>その他の詳細な設定については公式の解説@&lt;fn&gt;[config_guide]を参照してください。</p>
+<div class="footnote" epub:type="footnote" id="fn-config_guide"><p class="footnote">[*6] https://github.com/kmuto/review/wiki/config.yml</p></div>
+
+<h2><a id="h1-4"></a><span class="secno">1.4　</span>catalog.yml</h2>
+<p>YAMLで書籍の構成と、本文ファイルの対応を記述します。最初に章構成を考える際、ここを編集してファイルも作っておくと見通しがよくなります。</p>
+<p>本書であれば以下のような記述になっています。</p>
+<div class="emlist-code">
+<pre class="emlist">PREDEF:
+  - preface.re
+
+CHAPS:
+  - chapter01.re
+  - chapter02.re
+  - chapter03.re
+
+APPENDIX:
+
+POSTDEF:
+</pre>
+</div>
+<p>各項目の意味は以下のとおりです。</p>
+<dl>
+<dt>PREDEF</dt>
+<dd>前付け(目次より前に入る文章)を指定します。一般的には「前書き」「序文」などが該当します。トップレベル見出しに章番号などはつきません。</dd>
+<dt>CHAPS</dt>
+<dd>本文を指定します。この項目のみ指定必須になっています。トップレベル見出しは「第1章」などになります。</dd>
+<dt>APPENDIX</dt>
+<dd>付録を指定します。トップレベル見出しは「付録A」などになります。</dd>
+<dt>POSTDEF</dt>
+<dd>後付けを指定します。一般的には「後書き」「索引」などが該当します。トップレベル見出しに章番号などはつきません。</dd>
+</dl>
+
+<h2><a id="h1-5"></a><span class="secno">1.5　</span>本文の書き方</h2>
+<p>拡張子reのファイルはRe:VIEWフォーマットで記述する必要があります。</p>
+<p>基本的には何も考えずに文章を書けば、全てそのまま出力されます。改行は1つだけだと同じ段落で文章が続き、空行が入る場合は別段落になります。</p>
+<p>上記の文章であれば、ファイル中には以下のように記述されています。</p>
+<div class="emlist-code">
+<pre class="emlist">拡張子reのファイルはRe:VIEWフォーマットで記述する必要があります。
+
+基本的には何も考えずに文章を書けば、全てそのまま出力されます。
+改行は1つだけだと同じ段落で文章が続き、空行が入る場合は別段落になります。
+</pre>
+</div>
+<p>見出しは<code class="inline-code tt">=</code>を付け、サブ見出しは数を増やして表現します。</p>
+<p>本書であれば以下のような見出しを使っています。</p>
+<div class="emlist-code">
+<pre class="emlist">= Re:VIEWに触れてみよう！
+== 環境構築
+</pre>
+</div>
+<p>箇条書きは<code class="inline-code tt">*</code>を使います。ネスト項目は数を増やして表現します。</p>
+<p>また番号つき箇条書きは<code class="inline-code tt">1.</code>を使います。こちらはネストできないので注意してください。</p>
+<p>いずれも先頭に1文字以上のスペースが必要です。</p>
+<div class="emlist-code">
+<pre class="emlist"> * 項目1
+ ** 項目1のサブ項目
+ * 項目2
+
+ 1. 手順1
+ 2. 手順2
+</pre>
+</div>
+<p>用語リストは空白、<code class="inline-code tt">:</code>、空白で始まる行を使って表現します。本書ではconfig.ymlの説明などで使用しています。</p>
+<div class="emlist-code">
+<pre class="emlist"> : booktitle, aut
+   書籍タイトルと著者名。大扉や奥付に使用されます。好きなものに変更しましょう。
+ : date, history
+   刊行日と発行年月。実際に頒布するときには頒布日に変更すると良いでしょう。
+</pre>
+</div>
+<p>ソースコードのリストには <code class="inline-code tt">//list</code> を使います。参照用の連番を付けない場合は<code class="inline-code tt">emlist</code>を、行番号を付ける場合は<code class="inline-code tt">listnum</code>を使います。本書では<code class="inline-code tt">emlist</code>を多用しています。</p>
+<p>図の挿入には <code class="inline-code tt">//image</code> を使用します。例えば<code class="inline-code tt">sample.jpg</code>を「サンプル画像」というキャプションで挿入する場合には<code class="inline-code tt">//image[sample][サンプル画像]</code>といった記述になります。</p>
+<p>このあたりを抑えておけばある程度の文章を書けるはずです。</p>
+<p>これ以外にも図表の参照やコラムなど様々なコマンドがありますので、詳細については公式のフォーマットガイド<a id="fnb-format_guide" href="#fn-format_guide" class="noteref" epub:type="noteref">*7</a>を参照してください。</p>
+<div class="footnote" epub:type="footnote" id="fn-format_guide"><p class="footnote">[*7] https://github.com/kmuto/review/blob/master/doc/format.ja.md</p></div>
       </div>
       <nav class="book-navi book-prev">
                 <a href="preface.html">
