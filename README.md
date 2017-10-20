@@ -1,23 +1,28 @@
-# Re:VIEW Scaffold
+# Re:VIEWで本を書く本
 
-Scaffold Boilerplate for [Re:VIEW](https://github.com/kmuto/review) and [docker-review](https://github.com/vvakame/docker-review).
+[![CircleCI](https://circleci.com/gh/kokuyouwind/review-review.svg?style=svg)](https://circleci.com/gh/kokuyouwind/review-review)
 
-## Requirements
+[Re:VIEW](https://github.com/kmuto/review)を使って書籍を作る方法をまとめた書籍です。
 
-- docker
+以下の内容を扱います。
+
+ * [Re:VIEW scaffold](https://github.com/kokuyouwind/review-scaffold)を使って環境を作る方法
+ * 校正ツールやCIの使い方
+ * 書籍を印刷する方法
+
+## View on Web
+
+https://kokuyouwind.github.io/review-review/index.html
+
+## View by PDF, EPub
+
+https://circleci.com/gh/kokuyouwind/review-review/tree/master の最新ビルドを開き、Artifactタブから`book.pdf`, `book.epub`をダウンロードしてください。
 
 ## Setup
 
 ```
 $ git clone git@github.com:kokuyouwind/review-scaffold.git
-$ git remote rm origin
-$ git remote add origin (your-repo-url)
 ```
-
-option: You can use [CircleCI](https://circleci.com/) for autobuild pdf and use [textlint](https://github.com/textlint/textlint), [reviewdog](https://github.com/haya14busa/reviewdog).
-
-- Setup Your Project
-- Set `REVIEWDOG_GITHUB_API_TOKEN` Environment Variable
 
 ## HowToUse
 
