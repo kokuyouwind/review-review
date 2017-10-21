@@ -142,6 +142,7 @@ CHAPS:
 APPENDIX:
 
 POSTDEF:
+  - postface.re
 //}
 
 各項目の意味は以下のとおりです。
