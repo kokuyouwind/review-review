@@ -4,7 +4,7 @@
   ],
   "filters": {
     "whitelist": {
-      "allow": []
+      "allow": ["文字以上連続"]
     },
     "comments": true
   },

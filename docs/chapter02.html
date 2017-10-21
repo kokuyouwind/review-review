@@ -25,6 +25,113 @@
       </header>
       <div class="book-page">
         <h1><a id="h2"></a><span class="secno">第2章　</span>便利なツールを使ってみよう！</h1>
+<p>せっかくRe:VIEWで本を書くのなら、周辺の便利なツールについても役立てたいところです。</p>
+<p>本章では執筆に使ったツールを紹介します。</p>
+
+<h2><a id="h2-1"></a><span class="secno">2.1　</span>textlint</h2>
+<p>textlint<a id="fnb-textlint" href="#fn-textlint" class="noteref" epub:type="noteref">*1</a>はテキストファイルやマークダウンの校正ツールです。表記ゆれや長過ぎる文章、繰り返し表現などを検出することができ、これらの指摘を修正することでより良い文章へ修正することができます。</p>
+<div class="footnote" epub:type="footnote" id="fn-textlint"><p class="footnote">[*1] https://github.com/textlint/textlint</p></div>
+<p>類似のツールにRedPen<a id="fnb-redpen" href="#fn-redpen" class="noteref" epub:type="noteref">*2</a>があります。また表記ゆれを検出できるツールにproofread-helper<a id="fnb-prh" href="#fn-prh" class="noteref" epub:type="noteref">*3</a>があり、こちらはtextlint-rule-prh<a id="fnb-textlint-prh" href="#fn-textlint-prh" class="noteref" epub:type="noteref">*4</a>経由でtextlintから使用することができます。</p>
+<div class="footnote" epub:type="footnote" id="fn-redpen"><p class="footnote">[*2] http://redpen.cc/</p></div>
+<div class="footnote" epub:type="footnote" id="fn-prh"><p class="footnote">[*3] https://github.com/prh/prh</p></div>
+<div class="footnote" epub:type="footnote" id="fn-textlint-prh"><p class="footnote">[*4] https://github.com/textlint-rule/textlint-rule-prh</p></div>
+<p>textlintはプラグインを使用してルールの追加や入力フォーマットの追加が行えるようになっています。</p>
+<p>今回は技術文書向けのルールをまとめたtextlint-rule-preset-ja-technical-writing<a id="fnb-textlint-ja" href="#fn-textlint-ja" class="noteref" epub:type="noteref">*5</a>を使用します。またRe:VIEW形式に対応するため、textlint-plugin-review<a id="fnb-textlint-review" href="#fn-textlint-review" class="noteref" epub:type="noteref">*6</a>も使用します。</p>
+<div class="footnote" epub:type="footnote" id="fn-textlint-ja"><p class="footnote">[*5] https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing</p></div>
+<div class="footnote" epub:type="footnote" id="fn-textlint-review"><p class="footnote">[*6] https://github.com/orangain/textlint-plugin-review</p></div>
+<p>これらのツールセットアップはnpmで行うのですが、ボイラープレートには既に導入済みです。<code class="inline-code tt">bin/lint</code>でtextlintでの校正を実行することができます。</p>
+<div class="cmd-code">
+<pre class="cmd">$ <b>bin/lint</b>
+yarn run v0.27.5
+$ yarn --pure-lockfile &amp;&amp; textlint src/*.re
+Done in 9.29s.
+</pre>
+</div>
+<p>もし校正で問題が検出された場合、以下のように問題のある箇所と指摘内容が表示されます。</p>
+<div class="cmd-code">
+<pre class="cmd">$ <b>bin/lint</b>
+yarn run v0.27.5
+$ yarn --pure-lockfile &amp;&amp; textlint src/*.re
+
+/work/src/chapter02.re
+  27:42  ✓ error  文末が&quot;。&quot;で終わっていません。  preset-ja-technical-writing/ja-no-mixed-period
+
+✖ 1 problem (1 error, 0 warnings)
+✓ 1 fixable problem.
+Try to run: $ textlint --fix [file]
+
+error Command failed with exit code 1.
+</pre>
+</div>
+<p>ルールごとの設定は<code class="inline-code tt">.textlintrc</code>ファイルに記述します。プリセットはかなり厳しく校正を行うため、書籍の特性に応じて緩めて使用するといいでしょう。</p>
+<p>本書で使っている設定を以下に示します。</p>
+<div class="emlist-code">
+<pre class="emlist">{
+  &quot;plugins&quot;: [
+    &quot;review&quot;
+  ],
+  &quot;filters&quot;: {
+    &quot;whitelist&quot;: {
+      &quot;allow&quot;: [&quot;文字以上連続&quot;]
+    },
+    &quot;comments&quot;: true
+  },
+  &quot;rules&quot;: {
+    &quot;preset-ja-technical-writing&quot;: {
+      &quot;no-exclamation-question-mark&quot;: false,
+      &quot;ja-no-weak-phrase&quot;: false
+    }
+  }
+}
+</pre>
+</div>
+<p><code class="inline-code tt">filters</code>には校正を無視するためのフィルタールールを設定します。</p>
+<p><code class="inline-code tt">whitelist</code>は単語単位で校正を無視するためのものです。例えば漢字が6文字以上連続しないというルールで「文字以上連続」という部分だけは無視したい、という場合にこのような設定を行います。</p>
+<p><code class="inline-code tt">comments</code>はコメントで校正を無視する文章の指定を行えるものです。<code class="inline-code tt">#@# textlint-disable</code>と<code class="inline-code tt">#@# textlint-enable</code>で挟んだ箇所を校正対象外とします。</p>
+<p><code class="inline-code tt">rules</code>には校正ルールの設定を記述します。</p>
+<p>この本では、！や？を使わないようにする<code class="inline-code tt">no-exclamation-question-mark</code>ルールと、「思います」などの弱い表現を使わない<code class="inline-code tt">ja-no-weak-phrase</code>を無効にしています。</p>
+
+<h2><a id="h2-2"></a><span class="secno">2.2　</span>CircleCI</h2>
+<p>せっかく文章校正をコマンドで行えるのなら、自動で流したくなりますよね。CircleCI@&lt;fn&gt;[circleci]を使って自動で校正を行うようにしましょう。</p>
+<div class="footnote" epub:type="footnote" id="fn-circleci"><p class="footnote">[*7] https://circleci.com/</p></div>
+<p>まずはGitHubリポジトリを作り、原稿をpushする必要があります。新規リポジトリを作成した上でgitリポジトリのoriginに設定しましょう。</p>
+<p>以下は本書の例ですので、git urlを新しく作ったリポジトリのものに変えて実行してください。</p>
+<div class="cmd-code">
+<pre class="cmd">$ <b>git remote add origin git@github.com:kokuyouwind/review-review.git</b>
+$ <b>git push origin master</b>
+</pre>
+</div>
+<p>このリポジトリに対してCircleCIを設定しましょう。ボイラープレートでは既に設定ファイルが存在するので、CircleCIからプロジェクトを作成するだけでOKです。</p>
+<p>CircleCIにログインし、「Add Proejct」からプロジェクトを追加します。プロジェクトを追加すると、自動でビルドが始まり校正と書籍ファイルの作成が行われるようになります。</p>
+<p>ビルドに成功すると、<span class="imgref">図2.1</span>のようにArtifactが生成され、PDFなどを確認することができます。</p>
+<div id="circleci_artifact" class="image">
+<img src="images/circleci_artifact.png" alt="CircleCIでのArtifact生成" />
+<p class="caption">
+図2.1: CircleCIでのArtifact生成
+</p>
+</div>
+<p>CircleCIの設定は<code class="inline-code tt">.circleci/config.yml</code>に記述されています。追加のテストなどを行いたい場合はこのファイルを編集してください。</p>
+
+<h2><a id="h2-3"></a><span class="secno">2.3　</span>reviewdog</h2>
+<p>textlintの結果を確認するためにいちいちCircleCIの画面を見るのは面倒ですね。</p>
+<p>reviewdog<a id="fnb-reviewdog" href="#fn-reviewdog" class="noteref" epub:type="noteref">*8</a>を使うと、校正内容をGitHubのプルリクエストにコメントで書き込んでくれます。</p>
+<div class="footnote" epub:type="footnote" id="fn-reviewdog"><p class="footnote">[*8] https://github.com/haya14busa/reviewdog</p></div>
+<p><code class="inline-code tt">.circleci/config.yml</code>で既にreviewdogを使うよう設定されているため、CircleCIのプロジェクトに以下を設定するだけで使えるようになります。</p>
+<ul>
+<li><a href="https://github.com/settings/tokens" class="link">https://github.com/settings/tokens</a> からGitHubアクセストークンを発行する</li>
+<li>CircleCIのプロジェクト設定で、BuildSetting &gt; Environment Variablesから環境変数を設定する<ul>
+<li><code class="inline-code tt">REVIEWDOG_GITHUB_API_TOKEN</code>に先ほど発行したGitHubアクセストークンを設定する</li>
+</ul>
+</li>
+<li>同じくプロジェクト設定で、Advanced Settings &gt; Only build pull requestsを有効にする</li>
+</ul>
+<p>これらの設定を行った上で、textlintに違反したコードを含むプルリクエストを作成すると、<span class="imgref">図2.2</span>のようにプルリクエストコメントで指摘が行われます。</p>
+<div id="reviewdog" class="image">
+<img src="images/reviewdog.png" alt="reviewdogでの指摘コメント" />
+<p class="caption">
+図2.2: reviewdogでの指摘コメント
+</p>
+</div>
       </div>
       <nav class="book-navi book-prev">
                 <a href="chapter01.html">
