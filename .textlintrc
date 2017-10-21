@@ -4,7 +4,7 @@
   ],
   "filters": {
     "whitelist": {
-      "allow": ["文字以上連続"]
+      "allow": ["文字以上連続", "同人誌即売会", "……"]
     },
     "comments": true
   },
