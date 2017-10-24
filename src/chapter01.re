@@ -121,7 +121,7 @@ YAMLで書籍全体の設定が記述されています。
  : texdocumentclass
    デフォルトではA4サイズのPDFが作成されますが、一般的な同人誌はB5サイズです。このサイズを指定するにはTeXの詳細に立ち入ってしまいますが、@<code>{texdocumentclass: ["jsbook", "b5j,twoside,openany,uplatex"]}を指定してください。
 
-その他の詳細な設定については公式の解説@<fn>[config_guide]を参照してください。
+その他の詳細な設定については公式の解説@<fn>{config_guide}を参照してください。
 //footnote[config_guide][https://github.com/kmuto/review/wiki/config.yml]
 
 == catalog.yml
