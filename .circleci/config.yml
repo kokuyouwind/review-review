@@ -18,7 +18,14 @@ jobs:
           command: "curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog"
       - run:
           name: lint
-          command: "$(npm bin)/textlint -f checkstyle src/*.re | ./reviewdog -f=checkstyle -name=textlint -ci=circle-ci"
+          command: "$(npm bin)/textlint -f checkstyle src/*.re | tee check_result"
+      - run:
+          name: reviewdog
+          command: >
+              if [ -n "$REVIEWDOG_GITHUB_API_TOKEN" ]; then
+                cat check_result | ./reviewdog -f=checkstyle -name=textlint -ci=circle-ci
+              fi
+          when: on_fail
       - run:
           name: build artifacts
           command: "cd src && review-pdfmaker config.yml && review-epubmaker config.yml && review-webmaker config.yml"
