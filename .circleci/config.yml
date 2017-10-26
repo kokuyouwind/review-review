@@ -38,6 +38,13 @@ jobs:
       - store_artifacts:
           path: src/webroot
           destination: html
+      - run:
+          name: upload dropbox
+          command: >
+              if [ "$CIRCLE_BRANCH" = "master" -a -n "$DROPBOX_TOKEN" ]; then
+                mv src/book.pdf src/${CIRCLE_PROJECT_REPONAME}.pdf
+                sh bin/upload_dropbox.sh ./src/${CIRCLE_PROJECT_REPONAME}.pdf ${DROPBOX_TOKEN}
+              fi
       - save_cache:
           key: node_modules_{{ arch }}_{{ checksum "yarn.lock" }}
           paths:
