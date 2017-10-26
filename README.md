@@ -14,9 +14,13 @@
 
 https://kokuyouwind.github.io/review-review/index.html
 
-## View by PDF, EPub
+## View by PDF
 
-https://circleci.com/gh/kokuyouwind/review-review/tree/master の最新ビルドを開き、Artifactタブから`book.pdf`, `book.epub`をダウンロードしてください。
+[Dropbox](https://www.dropbox.com/s/enxclezke1f5q9p/review-review.pdf?dl=0) からダウンロードしてください。
+
+## View by EPub
+
+https://circleci.com/gh/kokuyouwind/review-review/tree/master の最新ビルドを開き、Artifactタブから`book.epub`をダウンロードしてください。
 
 ## Setup
 
