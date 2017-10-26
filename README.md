@@ -17,7 +17,12 @@ $ git remote add origin (your-repo-url)
 option: You can use [CircleCI](https://circleci.com/) for autobuild pdf and use [textlint](https://github.com/textlint/textlint), [reviewdog](https://github.com/haya14busa/reviewdog).
 
 - Setup Your Project
-- Set `REVIEWDOG_GITHUB_API_TOKEN` Environment Variable
+- If you use [reviewdog](https://github.com/haya14busa/reviewdog)
+  - Set `REVIEWDOG_GITHUB_API_TOKEN` Environment Variable
+  - Select "only PullRequest build"
+- If you use dropbox upload(master branch only)
+  - create access token from [Dropbox Developer](https://www.dropbox.com/developers)
+  - Set `DROPBOX_TOKEN` Environment Variable
 
 ## HowToUse
 
